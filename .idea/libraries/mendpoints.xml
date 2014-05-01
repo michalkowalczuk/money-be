@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="mendpoints">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/mendpoints.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
