@@ -31,7 +31,7 @@ public class Test extends EndpointsServlet {
                     @Override
                     public String process() {
                         JsonObject test = new JsonObject();
-                        test.addProperty("hello","world");
+                        test.addProperty("hello","another test?");
                         return test.toString();
                     }
 
