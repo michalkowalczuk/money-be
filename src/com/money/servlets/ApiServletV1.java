@@ -2,9 +2,10 @@ package com.money.servlets;
 
 import com.endpoints.EndpointController;
 import com.endpoints.EndpointServlet;
-import com.money.endpoints.AccountEndpoint;
-import com.money.endpoints.AccountsEndpoint;
-import com.money.endpoints.AddAccountEndpoint;
+import com.money.endpoints.account.AccountEndpoint;
+import com.money.endpoints.account.AccountsEndpoint;
+import com.money.endpoints.account.AccountsJournalsEndpoint;
+import com.money.endpoints.account.AddAccountEndpoint;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class ApiServletV1 extends EndpointServlet {
                 .addEndpoint(new AccountsEndpoint(request))
                 .addEndpoint(new AccountEndpoint(request))
                 .addEndpoint(new AddAccountEndpoint(request))
+                .addEndpoint(new AccountsJournalsEndpoint(request))
                 .getEndpointResult();
 
         response.setContentType("application/json; charset=utf-8");
