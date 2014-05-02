@@ -6,12 +6,12 @@
            version="3.0">
 
     <servlet>
-        <servlet-name>Test</servlet-name>
-        <servlet-class>com.test.Test</servlet-class>
+        <servlet-name>ApiServletV1</servlet-name>
+        <servlet-class>com.money.servlets.ApiServletV1</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Test</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>ApiServletV1</servlet-name>
+        <url-pattern>/v1/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
