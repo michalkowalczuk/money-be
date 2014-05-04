@@ -2,10 +2,7 @@ package com.money.servlets;
 
 import com.endpoints.EndpointController;
 import com.endpoints.EndpointServlet;
-import com.money.endpoints.account.AccountEndpoint;
-import com.money.endpoints.account.AccountsEndpoint;
-import com.money.endpoints.account.AccountsJournalsEndpoint;
-import com.money.endpoints.account.AddAccountEndpoint;
+import com.money.endpoints.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,10 +20,18 @@ public class ApiServletV1 extends EndpointServlet {
         response.addHeader("Access-Control-Allow-Origin", "*");
 
         String result = new EndpointController()
-                .addEndpoint(new AccountsEndpoint(request))
-                .addEndpoint(new AccountEndpoint(request))
-                .addEndpoint(new AddAccountEndpoint(request))
-                .addEndpoint(new AccountsJournalsEndpoint(request))
+                .addEndpoint(new AccountAdd(request))
+                .addEndpoint(new AccountGet(request))
+                .addEndpoint(new AccountRemove(request))
+                .addEndpoint(new AccountsGet(request))
+                .addEndpoint(new EntriesGet(request))
+                .addEndpoint(new EntryAdd(request))
+                .addEndpoint(new EntryGet(request))
+                .addEndpoint(new EntryRemove(request))
+                .addEndpoint(new JournalAdd(request))
+                .addEndpoint(new JournalGet(request))
+                .addEndpoint(new JournalRemove(request))
+                .addEndpoint(new JournalsGet(request))
                 .getEndpointResult();
 
         response.setContentType("application/json; charset=utf-8");

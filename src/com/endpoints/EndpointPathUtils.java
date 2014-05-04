@@ -3,6 +3,8 @@ package com.endpoints;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by michal on 02/05/14.
  */
