@@ -18,7 +18,7 @@ public class EndpointController {
         this.endpoints = new ArrayList<Endpoint>();
         defaultError = new JsonObject();
         defaultNoEndpoint = new JsonObject();
-        defaultNoEndpoint.addProperty("error","endpoint not found");
+        defaultNoEndpoint.addProperty("error", "endpoint not found");
     }
 
     public EndpointController addEndpoint(Endpoint endpoint) {
@@ -33,7 +33,8 @@ public class EndpointController {
                 try {
                     returnValue = endpoint.process();
                 } catch (Exception e) {
-                    defaultError.addProperty("error",e.getMessage());
+                    defaultError.addProperty("error", e.getMessage());
+                    returnValue = defaultError.toString();
                 }
                 break;
             }

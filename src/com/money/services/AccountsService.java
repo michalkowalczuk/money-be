@@ -25,7 +25,11 @@ public enum AccountsService {
     public List<Account> getAll() {
         List<Account> returnValue = new ArrayList<Account>();
         for(Entity entity: getAllAsEntities()) {
-            returnValue.add(toAccount(entity));
+            Account account = toAccount(entity);
+            account.setJournals(
+                    JournalService.INSTANCE.getAll(account.getId())
+            );
+            returnValue.add(account);
         }
         return returnValue;
     }
@@ -40,6 +44,9 @@ public enum AccountsService {
         Entity entity = getAsEntity(accountId);
         if(entity!=null) {
             returnValue = toAccount(entity);
+            returnValue.setJournals(
+                    JournalService.INSTANCE.getAll(accountId)
+            );
         }
         return returnValue;
     }

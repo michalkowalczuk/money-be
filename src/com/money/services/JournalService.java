@@ -17,14 +17,19 @@ public enum JournalService {
     private static final String ENTITY_NAME = "Journal";
 
     private DatastoreService datastoreService;
+
     private JournalService() {
         datastoreService = DatastoreServiceFactory.getDatastoreService();
     }
 
     public List<Journal> getAll(String accountId) {
         List<Journal> returnValue = new ArrayList<Journal>();
-        for(Entity entity: getAllAsEntities(accountId)) {
-            returnValue.add(toJournal(entity));
+        for (Entity entity : getAllAsEntities(accountId)) {
+            Journal journal = toJournal(entity);
+            journal.setEntries(
+                    EntryService.INSTANCE.getAll(journal.getId())
+            );
+            returnValue.add(journal);
         }
         return returnValue;
     }
@@ -32,7 +37,7 @@ public enum JournalService {
     public Iterable<Entity> getAllAsEntities(String accountId) {
         Iterable<Entity> returnValue = new ArrayList<Entity>();
         Entity ancestor = AccountsService.INSTANCE.getAsEntity(accountId);
-        if(ancestor!=null) {
+        if (ancestor != null) {
             Query query = new Query(ENTITY_NAME).setAncestor(ancestor.getKey());
             PreparedQuery preparedQuery = datastoreService.prepare(query);
             returnValue = preparedQuery.asIterable();
@@ -43,8 +48,11 @@ public enum JournalService {
     public Journal get(String journalId) {
         Journal returnValue = null;
         Entity entity = getAsEntity(journalId);
-        if(entity!=null) {
+        if (entity != null) {
             returnValue = toJournal(entity);
+            returnValue.setEntries(
+                    EntryService.INSTANCE.getAll(journalId)
+            );
         }
         return returnValue;
     }
@@ -58,7 +66,7 @@ public enum JournalService {
 
     public void add(String accountId, Journal journal) {
         Entity ancestor = AccountsService.INSTANCE.getAsEntity(accountId);
-        if(ancestor!=null) {
+        if (ancestor != null) {
             Entity entity = toEntity(ancestor, journal);
             datastoreService.put(entity);
         }
@@ -74,15 +82,29 @@ public enum JournalService {
         }
     }
 
+    /**
+     * The only thing you can update is name - not the
+     * best way but should do for now...
+     */
+    public void update(Journal journal) {
+        Entity entity = getAsEntity(journal.getId());
+        if(entity!=null) {
+            entity.setProperty("name", journal.getName());
+            datastoreService.put(entity);
+        }
+    }
+
     private Entity toEntity(Entity ancestor, Journal journal) {
         Entity returnValue = new Entity(ENTITY_NAME, ancestor.getKey());
         returnValue.setProperty("id", journal.getId());
+        returnValue.setProperty("name", journal.getName());
         return returnValue;
     }
 
     private Journal toJournal(Entity entity) {
         Journal returnValue = new Journal();
         returnValue.setId((String) entity.getProperty("id"));
+        returnValue.setName((String) entity.getProperty("name"));
         return returnValue;
     }
 

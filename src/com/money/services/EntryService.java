@@ -4,6 +4,7 @@ package com.money.services;
 import com.google.appengine.api.datastore.*;
 import com.money.model.Entry;
 import com.money.model.Journal;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,12 +77,16 @@ public enum EntryService {
     private Entity toEntity(Entity ancestor, Entry entry) {
         Entity returnValue = new Entity(ENTITY_NAME, ancestor.getKey());
         returnValue.setProperty("id", entry.getId());
+        returnValue.setProperty("dateFormatted", entry.getDateFormatted());
+        returnValue.setProperty("amount", entry.getAmount());
         return returnValue;
     }
 
     private Entry toEntry(Entity entity) {
         Entry returnValue = new Entry();
         returnValue.setId((String) entity.getProperty("id"));
+        returnValue.setAmount((Double) entity.getProperty("amount"));
+        returnValue.setDateFromFormattedString((String) entity.getProperty("dateFormatted"));
         return returnValue;
     }
 

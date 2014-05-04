@@ -5,6 +5,7 @@ import com.google.appengine.repackaged.com.google.api.client.json.Json;
 import com.money.model.Journal;
 import com.money.serializer.JsonSerializer;
 import com.money.services.JournalService;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -32,6 +33,14 @@ public class JournalAdd extends Endpoint {
     public String process() {
         Journal journal = new Journal();
         journal.setId(UUID.randomUUID().toString());
+
+        journal.setName("");
+        if(StringUtils.isNotBlank(getRequest().getParameter("name"))) {
+            journal.setName(getRequest().getParameter("name"));
+        }
+
+        System.out.println(getRequest().getParameter("name"));
+
         JournalService.INSTANCE.add(
                 getPathData().get("accountId").getAsString(),
                 journal

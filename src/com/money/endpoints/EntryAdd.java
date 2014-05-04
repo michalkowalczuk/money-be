@@ -1,9 +1,11 @@
 package com.money.endpoints;
 
 import com.endpoints.Endpoint;
+import com.google.gson.JsonObject;
 import com.money.model.Entry;
 import com.money.serializer.JsonSerializer;
 import com.money.services.EntryService;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -29,11 +31,20 @@ public class EntryAdd extends Endpoint {
 
     @Override
     public String process() {
-        Entry entry = new Entry();
-        entry.setId(UUID.randomUUID().toString());
 
-        EntryService.INSTANCE.add(getPathData().get("journalId").getAsString(), entry);
+        String returnValue = new JsonObject().toString();
 
-        return new JsonSerializer(getRequest(), getPathData()).serialize(entry).toString();
+        double amount = NumberUtils.toDouble(getRequest().getParameter("amount"));
+
+        if(amount!=0d) {
+            Entry entry = new Entry();
+            entry.setId(UUID.randomUUID().toString());
+            entry.setAmount(amount);
+            EntryService.INSTANCE.add(getPathData().get("journalId").getAsString(), entry);
+
+            returnValue = new JsonSerializer(getRequest(), getPathData()).serialize(entry).toString();
+        }
+
+        return returnValue;
     }
 }

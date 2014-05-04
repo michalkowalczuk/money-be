@@ -36,10 +36,12 @@ public class JsonSerializer {
         @Override
         public JsonElement serialize(Account account, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject returnValue = new JsonObject();
+
+            returnValue.addProperty("id", account.getId());
+            returnValue.addProperty("balance", account.getBalance());
+
             String href = StringUtils.removeEnd(request.getRequestURL().toString(), request.getPathInfo());
             returnValue.addProperty("href", href + "/account/" + account.getId());
-            returnValue.addProperty("id", account.getId());
-
             JsonObject journals = new JsonObject();
             journals.addProperty("href", href + "/account/" + account.getId() + "/journals");
             returnValue.add("journals", journals);
@@ -52,6 +54,11 @@ public class JsonSerializer {
         @Override
         public JsonElement serialize(Journal journal, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject returnValue = new JsonObject();
+
+            returnValue.addProperty("id", journal.getId());
+            returnValue.addProperty("name", journal.getName());
+            returnValue.addProperty("balance", journal.getBalance());
+
             if(pathData.has("accountId")) {
                 String accountId = pathData.get("accountId").getAsString();
                 String href = StringUtils.removeEnd(request.getRequestURL().toString(), request.getPathInfo());
@@ -62,7 +69,7 @@ public class JsonSerializer {
                         "/journal/" + journal.getId() + "/entries");
                 returnValue.add("entries",entries);
             }
-            returnValue.addProperty("id", journal.getId());
+
             return returnValue;
         }
     }
@@ -72,6 +79,10 @@ public class JsonSerializer {
         public JsonElement serialize(Entry entry, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject returnValue = new JsonObject();
 
+            returnValue.addProperty("id", entry.getId());
+            returnValue.addProperty("amount", entry.getAmount());
+            returnValue.addProperty("dateTime", entry.getDateFormatted());
+
             if(pathData.has("accountId") && pathData.has("journalId")) {
                 String accountId = pathData.get("accountId").getAsString();
                 String journalId = pathData.get("journalId").getAsString();
@@ -79,7 +90,7 @@ public class JsonSerializer {
                 returnValue.addProperty("href",
                         href + "/account/" + accountId + "/journal/" + journalId + "/entry/" + entry.getId());
             }
-            returnValue.addProperty("id", entry.getId());
+
             return returnValue;
         }
     }

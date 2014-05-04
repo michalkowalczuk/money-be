@@ -32,6 +32,7 @@ public class ApiServletV1 extends EndpointServlet {
                 .addEndpoint(new JournalGet(request))
                 .addEndpoint(new JournalRemove(request))
                 .addEndpoint(new JournalsGet(request))
+                .addEndpoint(new JournalUpdate(request))
                 .getEndpointResult();
 
         response.setContentType("application/json; charset=utf-8");
